@@ -13,6 +13,7 @@ public class Books {
     private String author;
     private Long usedBy;
     private Long takenTime;
+    private Long endTime;
 
     public Books() {
     }
@@ -20,6 +21,14 @@ public class Books {
     public Books(String name, String author) {
         this.name = name;
         this.author = author;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
     public void setId(Long id) {

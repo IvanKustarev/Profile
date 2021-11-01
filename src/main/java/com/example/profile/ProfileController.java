@@ -1,6 +1,7 @@
 package com.example.profile;
 
 import com.example.profile.models.Books;
+import com.example.profile.models.Users;
 import com.example.profile.repositories.BooksRepository;
 import com.example.profile.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,14 @@ public class ProfileController {
     @GetMapping("/{id}/")
     public String profileGet(@PathVariable("id") Long id, Model model) {
         List<Books> booksList = booksUsedBy(id);
+        Users users = usersRepository.findById(id).get();
+        model.addAttribute("userId", id);
+        model.addAttribute("fullName", users.getFullName());
+        model.addAttribute("address", users.getAddress());
         model.addAttribute("booksList", booksList);
+
+        addModelAttributes(model, id);
+
         return "profile";
     }
 
@@ -54,5 +62,15 @@ public class ProfileController {
             }
         }
         return booksList;
+    }
+
+    private Model addModelAttributes(Model model, Long userId){
+        model.addAttribute("toAuthorisation", "http://localhost:8081/authorisation/");
+        model.addAttribute("toProfile", "http://localhost:8082/profile/" + userId + "/");
+        model.addAttribute("toCatalog", "http://localhost:8083/catalog/" + userId + "/");
+        model.addAttribute("toSubscription", "http://localhost:8084/subscription/" + userId + "/");
+        model.addAttribute("toPay", "http://localhost:8085/pay/" + userId + "/");
+        model.addAttribute("toPenalties", "http://localhost:8086/penalties/" + userId + "/");
+        return model;
     }
 }
